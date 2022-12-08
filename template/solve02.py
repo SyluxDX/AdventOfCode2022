@@ -1,7 +1,8 @@
 import argparse
 
 def func():
-    pass
+    with open(ARGS.input, "r", encoding="utf8")as ifp:
+        data = ifp.read().rstrip()
 
 
 if __name__ == "__main__":
