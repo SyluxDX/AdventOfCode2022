@@ -13,3 +13,4 @@ My solutions, maily in python, for the [Advent of Code 2022](https://adventofcod
  - [Day 8: Treetop Tree House](day08/README.md)
  - [Day 9: Rope Bridge](day09/README.md)
  - [Day 10: Cathode-Ray Tube](day10/README.md)
+ - [Day 11: Monkey in the Middle](day11/README.md)

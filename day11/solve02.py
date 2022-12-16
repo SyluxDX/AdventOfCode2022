@@ -1,4 +1,5 @@
 import argparse
+import math
 
 # dataclass
 class Monkey:
@@ -22,7 +23,7 @@ if false throw to: {}""".format(
     self.throw_false
 )
 
-def monkey_keep_away():
+def monkey_keep_away(debug=False):
     with open(ARGS.input, "r", encoding="utf8")as ifp:
         data = ifp.read().rstrip()
     monkeys_list = []
@@ -42,9 +43,16 @@ def monkey_keep_away():
             # throw option if false
             int(monkey_operations[5][26]),
         ))
+
+    # calculate Least Common Multiple for monkeys division throw test
+    # since test-division are all prime number it can be calculated by multiplication
+    monkey_lcm = 1
+    for monkey in monkeys_list:
+        monkey_lcm *= monkey.test_division
+
     debug_round = [1, 20, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
     for round in range(10000):
-        print(round)
+        # print(round)
         # monkey turn
         for i, monkey in enumerate(monkeys_list):
             monkey: Monkey
@@ -53,14 +61,16 @@ def monkey_keep_away():
                 # increment inspections
                 monkey.inspections += 1
                 # increase worry by inpecting it
-                final = eval(monkey.operation)
+                new = eval(monkey.operation)
+                # Manage worry
+                final = new % monkey_lcm
                 # choose target of throw
                 if not final%monkey.test_division:
                     monkeys_list[monkey.throw_true].items.append(final)
                 else:
                     monkeys_list[monkey.throw_false].items.append(final)
         ## debug rounds
-        if round+1 in debug_round:
+        if debug and round+1 in debug_round:
             print(f"== After round {round+1} ==")
             for i, monkey in enumerate(monkeys_list):
                 print(f"Monkey {i} inspected items {monkey.inspections} times.")
