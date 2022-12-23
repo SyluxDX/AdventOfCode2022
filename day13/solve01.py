@@ -1,26 +1,5 @@
 import argparse
-
-def parse_package_old(package_string):
-    print("parse:", package_string)
-    package = []
-    buffer = ""
-    for i, char in enumerate(package_string):
-        print("char", char, i, "buffer:", buffer)
-        if char == ",":
-            package.append(int(buffer))
-            buffer = ""
-        elif char == "[":
-            package.append(parse_package(package_string[i+1:]))
-        elif char == "]":
-            package.append(int(buffer))
-            print(f"returning", package)
-            return package
-        else:
-            # number
-            buffer += char
-    
-    print("error: parsing")
-    return package
+import logging
 
 def parse_package(package_string, start=1):
     
@@ -29,35 +8,27 @@ def parse_package(package_string, start=1):
     i = start
     while i < len(package_string):
         char = package_string[i]
-        # print("parse:", package_string)
-        # print("      ", " "*i+"^")
-        # print("char", char, i, "buffer:", buffer)
-        
         if char == ",":
             if buffer:
-                # print("append")
                 package.append(int(buffer))
                 buffer = ""
         elif char == "[":
-            # print("nested")
             nested, i = parse_package(package_string, i+1)
             package.append(nested)
         elif char == "]":
             if buffer:
                 package.append(int(buffer))
-            # print(f"returning", package)
             return package, i
         else:
             # number
             buffer += char
-            # print("add 2 buffer", buffer)
         # next character
         i += 1
     
-    print("error: parsing")
+    logging.debug("error: parsing")
     return package, i
 
-def check_order(left_package, right_package, debug=True, indent=""):
+def check_order(left_package, right_package, indent=""):
     """ check order results:
     -1 -> not in order (right is lower)
      0 -> can't order, continue
@@ -65,63 +36,76 @@ def check_order(left_package, right_package, debug=True, indent=""):
     """        
     while True:
         # check for empty packages
+        if len(left_package) == 0 and len(right_package) == 0:
+            return 0
         if len(left_package) == 0:
-            if debug:
-                print(f"{indent}  - Left side ran out of items, so inputs are in the right order")
+            logging.debug(f"{indent}  - Left side ran out of items, so inputs are in the right order")
             return 1
         if len(right_package) == 0:
-            if debug:
-                print(f"{indent}  - Right side ran out of items, so inputs are not in the right order")
+            logging.debug(f"{indent}  - Right side ran out of items, so inputs are not in the right order")
             return -1    
         left = left_package.pop(0)
         right = right_package.pop(0)
-        if debug:
-            print(f"{indent}- Compare {left} vs {right}")
+        logging.debug(f"{indent}- Compare {left} vs {right}")
         # check for Mixed types
         if isinstance(left, list) and isinstance(right, int):
             right = [right]
-            if debug:
-                print(f"{indent}  - Mixed types; convert right to {right} and retry comparison")
+            logging.debug(f"{indent}  - Mixed types; convert right to {right} and retry comparison")
             # nested comparison:
-            result = check_order(left, right, debug, indent+"  ")
+            result = check_order(left, right, indent+"  ")
             if result:
                 return result
-        # TODO: add left convertion to list
-        # TODO: change to only compare if integers
-        # compare 
-        if left < right:
-            if debug:
-                print(f"{indent}  - Left side is smaller, so inputs are in the right order")
-            return 1
-        if right < left:
-            if debug:
-                print(f"{indent}  - Right side is smaller, so inputs are not in the right order")
-            return -1
+        elif isinstance(left, int) and isinstance(right, list):
+            left = [left]
+            logging.debug(f"{indent}  - Mixed types; convert left to {left} and retry comparison")
+            # nested comparison:
+            result = check_order(left, right, indent+"  ")
+            if result:
+                return result
+        if isinstance(left, list) and isinstance(right, list):
+            result = check_order(left, right, indent+"  ")
+            if result:
+                return result
+        else:
+            # compare integers
+            if left < right:
+                logging.debug(f"{indent}  - Left side is smaller, so inputs are in the right order")
+                return 1
+            if right < left:
+                logging.debug(f"{indent}  - Right side is smaller, so inputs are not in the right order")
+                return -1
     return 0
 
 def package_order():
     # read input file
     with open(ARGS.input, "r", encoding="utf8")as ifp:
         data = ifp.read().rstrip()
-    # print(data)
+    # logging.debug(data)
     
     ## split pair packages
     package_pairs = data.split("\n\n")
     # process each pair
-    for i, pair in enumerate(package_pairs[:2]):
-        print(f"== Pair {i} ==")
+    sum_index = 0
+    for i, pair in enumerate(package_pairs):
         package_pair = [parse_package(package)[0] for package in pair.split("\n")]
-        print(f"comparing {package_pair[0]} vs {package_pair[1]}")
-        check_order(package_pair[0], package_pair[1])
-        print("-----")
-        # for 
+        logging.debug(f"== Pair {i+1} ==")
+        logging.debug(f"comparing {package_pair[0]} vs {package_pair[1]}")
+        result = check_order(package_pair[0], package_pair[1])
+        if result == 1:
+            sum_index += i+1
+        logging.debug("")
+    print("Sum of the indices in order:", sum_index)
         
 
 
 if __name__ == "__main__":
     _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
     _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     ARGS = _parser.parse_args()
+
+    if ARGS.verbose:
+        logging.basicConfig(level=logging.DEBUG, format="%(message)s")
 
     if not ARGS.input:
         print("No input argument, use flag -i")
