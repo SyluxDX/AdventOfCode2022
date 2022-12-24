@@ -44,10 +44,7 @@ def simulate_rope_snake():
     # set of positons
     visited_by_tail = {tail.pos()}
 
-    # print("== Initial state == ")
-    # print_map(head, tail)
     for motion in data:
-        # print(f"== {motion[0]} {motion[1]} ==")
         move = translate_move[motion[0]]
         for _ in range(int(motion[1])):
             past_head = head.pos()
@@ -61,15 +58,11 @@ def simulate_rope_snake():
                 tail.y = past_head[1]
                 visited_by_tail.add(tail.pos())
 
-        #     print_map(head, tail)
-        #     input()        
-        # print()
     print("Tail visited:", len(visited_by_tail))
 
-
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 9 Puzzle 1")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

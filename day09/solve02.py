@@ -57,11 +57,8 @@ def simulate_rope_snake():
         "L": (0,-1),
         "D": (1,0),
     }
-    
-    # print("== Initial state == ")
-    # print_map(knot_list, (21,26), (15,11))
+
     for motion in data:
-        # print(f"== {motion[0]} {motion[1]} ==")
         move = translate_move[motion[0]]
         for _ in range(int(motion[1])):
             # move head
@@ -83,21 +80,17 @@ def simulate_rope_snake():
                     if elc_y:
                         vector_y = elc_y//abs(elc_y)
                     # move knot
-                    knot_list[i].x += vector_x 
+                    knot_list[i].x += vector_x
                     knot_list[i].y += vector_y
 
             # add tail to set positions
             visited_by_tail.add(knot_list[-1].pos())
 
-        # print_map(knot_list, (21,26), (15,11))
-        # input()        
-        # print()
     print("Tail visited:", len(visited_by_tail))
-    # print_tail_map(visited_by_tail, (21,26), (15,11))
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 9 Puzzle 2")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

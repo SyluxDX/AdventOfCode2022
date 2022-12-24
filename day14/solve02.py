@@ -113,7 +113,7 @@ def falling_sand():
 
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description="Day x Puzzle 1")
+    _parser = argparse.ArgumentParser(description="Day 14 Puzzle 2")
     _parser.add_argument("-i", "--input", help="Puzzle input")
     _parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     _parser.add_argument("-vv", "--very-verbose", help="futher increase output verbosity", action="store_true")

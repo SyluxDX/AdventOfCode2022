@@ -5,7 +5,7 @@ def debug_print(trees, row, column):
     trees[row][column] = "X"
     for x in trees:
         for j in x:
-            print(j, end='')
+            print(j, end="")
         print()
     trees[row][column] = tree_height
 
@@ -73,8 +73,8 @@ def count_visable():
     print("max scenic score:", scenic_score)
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 8 Puzzle 2")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

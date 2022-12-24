@@ -43,7 +43,6 @@ def monkey_keep_away():
             int(monkey_operations[5][26]),
         ))
     for _ in range(20):
-    # for _ in range(1):
         # monkey turn
         for i, monkey in enumerate(monkeys_list):
             monkey: Monkey
@@ -52,34 +51,28 @@ def monkey_keep_away():
                 old = monkey.items.pop(0)
                 # increment inspections
                 monkey.inspections += 1
-                # print(" inspect item with", old)
                 # increase worry by inpecting it
                 new = eval(monkey.operation)
-                # print(" worry increase to", new)
                 # decrease worry since item not broken
                 final = new//3
-                # print(" monkey bored, worry", final)
                 # choose target of throw
                 if not final%monkey.test_division:
-                    # print(f" worry divisable by {monkey.test_division}, throw to {monkey.throw_true}")
                     monkeys_list[monkey.throw_true].items.append(final)
                 else:
-                    # print(monkey.throw_false)
-                    # print(f" worry not divisable by {monkey.test_division}, throw to {monkey.throw_false}")
                     monkeys_list[monkey.throw_false].items.append(final)
-                # print()
+
     interactions = []
     for i, monkey in enumerate(monkeys_list):
         # print(f"Monkey {i} inspected items {monkey.inspections} times.")
         interactions.append(monkey.inspections)
-    
+
     interactions.sort()
     print(f"Level of monkey bussiness: {interactions[-1]*interactions[-2]}")
-    
+
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 11 Puzzle 1")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

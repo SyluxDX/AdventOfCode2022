@@ -41,7 +41,7 @@ def hill_climb():
 
     for x in height:
         print(x)
-    
+
     ## Get debug map
     path_taken = [["."]*len(height[0]) for _ in range(len(height))]
     path_taken[start[0]][start[1]] = "S"
@@ -49,10 +49,9 @@ def hill_climb():
 
     debug_print(path_taken)
 
-
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 12 Puzzle 1")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

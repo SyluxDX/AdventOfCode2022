@@ -130,8 +130,8 @@ def get_decoder_key():
     print("Decoder key:", first_divider * second_divider)
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 13 Puzzle 2")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     _parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     ARGS = _parser.parse_args()
 

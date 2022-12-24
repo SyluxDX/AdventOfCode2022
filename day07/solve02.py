@@ -19,21 +19,16 @@ def device_usage():
         else:
             # assuming a ls was called
             if sline[0] == "dir":
-                # print(f"{'|'.join(path)}\\{sline[1]}")
                 pass
             else:
                 aux_path = []
                 for folder in path:
                     aux_path.append(folder)
-                    key_folder = '/'.join(aux_path)
+                    key_folder = "/".join(aux_path)
                     if key_folder in folder_size:
                         folder_size[key_folder] += int(sline[0])
                     else:
                         folder_size[key_folder] = int(sline[0])
-
-    # print("folders:")
-    # for key in folder_size:
-    #     print(f"{key}\n {folder_size[key]}")
 
     root = folder_size["/"]
     free = 70000000 - root
@@ -49,8 +44,8 @@ def device_usage():
 
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 7 Puzzle 2")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

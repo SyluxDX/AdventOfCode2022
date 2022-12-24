@@ -2,7 +2,7 @@ import argparse
 import logging
 
 def parse_package(package_string, start=1):
-    
+
     package = []
     buffer = ""
     i = start
@@ -24,7 +24,7 @@ def parse_package(package_string, start=1):
             buffer += char
         # next character
         i += 1
-    
+
     logging.debug("error: parsing")
     return package, i
 
@@ -33,7 +33,7 @@ def check_order(left_package, right_package, indent=""):
     -1 -> not in order (right is lower)
      0 -> can't order, continue
      1 -> in order (left is lower)
-    """        
+    """
     while True:
         # check for empty packages
         if len(left_package) == 0 and len(right_package) == 0:
@@ -43,7 +43,7 @@ def check_order(left_package, right_package, indent=""):
             return 1
         if len(right_package) == 0:
             logging.debug(f"{indent}  - Right side ran out of items, so inputs are not in the right order")
-            return -1    
+            return -1
         left = left_package.pop(0)
         right = right_package.pop(0)
         logging.debug(f"{indent}- Compare {left} vs {right}")
@@ -81,7 +81,7 @@ def package_order():
     with open(ARGS.input, "r", encoding="utf8")as ifp:
         data = ifp.read().rstrip()
     # logging.debug(data)
-    
+
     ## split pair packages
     package_pairs = data.split("\n\n")
     # process each pair
@@ -95,11 +95,10 @@ def package_order():
             sum_index += i+1
         logging.debug("")
     print("Sum of the indices in order:", sum_index)
-        
 
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
+    _parser = argparse.ArgumentParser(description='Day 13 Puzzle 1')
     _parser.add_argument('-i', '--input', help='Puzzle input')
     _parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     ARGS = _parser.parse_args()

@@ -39,12 +39,12 @@ def move_crates():
     top = []
     for stack in stacks:
         top.append(stack[-1])
-    print(''.join(top))
+    print("".join(top))
 
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 5 Puzzle 1")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:

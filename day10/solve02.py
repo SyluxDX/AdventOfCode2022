@@ -27,7 +27,7 @@ def exewcute_and_draw():
             line_buffer = []
             crt_row = 0
             target_cycle += 40
-        
+
         if instruction[0] == "addx":
             # add instruction to simulate add duration
             data_stack.insert(0, f"rstx {instruction[1]}")
@@ -42,8 +42,8 @@ def exewcute_and_draw():
         print("".join(line))
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description='Day x Puzzle 1')
-    _parser.add_argument('-i', '--input', help='Puzzle input')
+    _parser = argparse.ArgumentParser(description="Day 10 Puzzle 2")
+    _parser.add_argument("-i", "--input", help="Puzzle input")
     ARGS = _parser.parse_args()
 
     if not ARGS.input:
