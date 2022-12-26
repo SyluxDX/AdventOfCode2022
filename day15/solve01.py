@@ -2,27 +2,19 @@ import argparse
 import logging
 import re
 
+def manhattan_distance(x, y):
+    return abs(x[0]-y[0]) + abs(x[1]-y[1])
+
 def find_not_beacon():
     with open(ARGS.input, "r", encoding="utf8")as ifp:
         data = ifp.read().rstrip()
 
     regex = re.compile(r"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)")
     beacons = []
-    sensores = []
-    map_column_min = None
-    map_column_max = None
-    map_row_min = None
-    map_row_max = None
+    sensors = []
     for line in data.split("\n"):
         positions = regex.search(line)
-        if map_column_min is None:
-            map_column_min = min(int(positions.groups()[0]), int(positions.groups()[2]))
-            map_column_max = max(int(positions.groups()[0]), int(positions.groups()[2]))
-
-            map_row_min = min(int(positions.groups()[1]), int(positions.groups()[3]))
-            map_row_max = max(int(positions.groups()[1]), int(positions.groups()[3]))
-
-        sensores.append((
+        sensors.append((
             int(positions.groups()[0]),
             int(positions.groups()[1]),
         ))
@@ -30,20 +22,42 @@ def find_not_beacon():
             int(positions.groups()[2]),
             int(positions.groups()[3]),
         ))
-        map_column_min = min(map_column_min, int(positions.groups()[0]), int(positions.groups()[2]))
-        map_column_max = max(map_column_max, int(positions.groups()[0]), int(positions.groups()[2]))
-        map_row_min = min(map_row_min, int(positions.groups()[1]), int(positions.groups()[3]))
-        map_row_max = max(map_row_max, int(positions.groups()[1]), int(positions.groups()[3]))
 
-    print("map_column_min", map_column_min)
-    print("map_column_max", map_column_max)
-    print("map_row_min", map_row_min)
-    print("map_row_max", map_row_max)
-
+    # target_row = 2000000
+    target_row = 10
+    not_beacons = set()
     for i in range(len(beacons)):
-        print(sensores[i], beacons[i])
-    ## for each pair on beacon sensor calculate Manhattan distance
-    # then for each cell in row check if cell is closer to sensor
+        print(f"checking pair {i+1}/{len(beacons)}")
+        logging.debug(f"{sensors[i]} {beacons[i]} -> {manhattan_distance(sensors[i], beacons[i])}")
+
+        closest_beacon = manhattan_distance(sensors[i], beacons[i])
+        # check distance to target_row
+        closest_target_row = (sensors[i][0], target_row)
+        if manhattan_distance(sensors[i], closest_target_row) <= closest_beacon:
+            # check left
+            n = 0
+            while True:
+                test = (closest_target_row[0]-n, closest_target_row[1])
+                if test not in not_beacons:
+                    if test not in sensors and test not in beacons:
+                        if manhattan_distance(sensors[i], test) <= closest_beacon:
+                            not_beacons.add(test)
+                        else:
+                            break
+                n += 1
+            # check left
+            n = 0
+            while True:
+                test = (closest_target_row[0]+n, closest_target_row[1])
+                if test not in not_beacons:
+                    if test not in sensors and test not in beacons:
+                        if manhattan_distance(sensors[i], test) <= closest_beacon:
+                            not_beacons.add(test)
+                        else:
+                            break
+                n += 1
+    
+    print(f"Row {target_row} there are {len(not_beacons)} position(s) where beacon cannot be")
 
 if __name__ == "__main__":
     _parser = argparse.ArgumentParser(description="Day 14 Puzzle 2")
