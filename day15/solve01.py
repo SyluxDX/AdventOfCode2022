@@ -56,7 +56,7 @@ def find_not_beacon():
                         else:
                             break
                 n += 1
-    
+
     print(f"Row {target_row} there are {len(not_beacons)} position(s) where beacon cannot be")
 
 if __name__ == "__main__":
