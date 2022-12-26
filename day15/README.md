@@ -104,14 +104,20 @@ So, suppose you have an arrangement of beacons and sensors like in the example a
 In this example, in the row where _y=10_, there are _**26**_ positions where a beacon cannot be present.
 
 Consult the report from the sensors you just deployed. **In the row where y=2000000, how many positions cannot contain a beacon?**
+
 ```
 python solve01.py -i input.txt
 ```
 
-
 ## Part 2
 
+Your handheld device indicates that the distress signal is coming from a beacon nearby. The distress beacon is not detected by any sensor, but the distress beacon must have x and y coordinates each no lower than _0_ and no larger than _4000000_.
 
+To isolate the distress beacon's signal, you need to determine its **tuning frequency**, which can be found by multiplying its _x_ coordinate by _4000000_ and then adding its _y_ coordinate.
+
+In the example above, the search space is smaller: instead, the _x_ and _y_ coordinates can each be at most _20_. With this reduced search area, there is only a single position that could have a beacon: _x=14, y=11_. The tuning frequency for this distress beacon is _**56000011**_.
+
+Find the only possible position for the distress beacon. **What is its tuning frequency?**
 ```
 python solve02.py -i input.txt
 ```

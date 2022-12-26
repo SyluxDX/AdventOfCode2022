@@ -1,0 +1,4 @@
+
+I really wanted to title this one "Check your Perimeter!", but that would be a little too much of a spoiler for a title.
+
+But the strategy here is pretty straightforward once you realize it: check the perimeter one step outside of each beacon's range (and within the search region) until you find a position that's outside of all of the beacons. There may be faster strategies, but this one, at least, is quick enough (it still reduces the dimensionality of the search space) and easy to implement.
