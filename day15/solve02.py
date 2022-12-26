@@ -2,14 +2,12 @@ import argparse
 import logging
 import re
 
-# class SensorBeacon:
-
-
 def manhattan_distance(x, y) -> int:
     return abs(x[0]-y[0]) + abs(x[1]-y[1])
 
-def sensor_beacon_perimeter(sensor, beacon, max_coordinate, min_coordinate=0) -> list:
+def sensor_beacon_perimeter(sensor, beacon, max_coordinate, min_coordinate=0):
     """ generate perimeter positions clockwise, starting at left or 9 o'clock """
+
     perimeter = []
     distance = manhattan_distance(sensor, beacon) + 1
     for i in range(distance):
@@ -36,45 +34,6 @@ def sensor_beacon_perimeter(sensor, beacon, max_coordinate, min_coordinate=0) ->
 
     return perimeter
 
-def count_not_beacon(sensors, beacons, target_row):
-    not_beacons = set()
-    sensors_on_target = set()
-    beacons_on_target = set()
-    for i in range(len(beacons)):
-        logging.info(f"  checking pair {i+1}/{len(beacons)}")
-
-        if sensors[i][1] == target_row:
-            sensors_on_target.add(sensors[i])
-        if beacons[i][1] == target_row:
-            beacons_on_target.add(beacons[i])
-
-        closest_beacon = manhattan_distance(sensors[i], beacons[i])
-        # check distance to target_row
-        closest_target_row = (sensors[i][0], target_row)
-        if manhattan_distance(sensors[i], closest_target_row) <= closest_beacon:
-            # check left
-            n = 0
-            while True:
-                test = (closest_target_row[0]-n, closest_target_row[1])
-                if test not in not_beacons and test not in sensors and test not in beacons:
-                    if manhattan_distance(sensors[i], test) <= closest_beacon:
-                        not_beacons.add(test)
-                    else:
-                        break
-                n += 1
-            # check left
-            n = 0
-            while True:
-                test = (closest_target_row[0]+n, closest_target_row[1])
-                if test not in not_beacons and test not in sensors and test not in beacons:
-                    if manhattan_distance(sensors[i], test) <= closest_beacon:
-                        not_beacons.add(test)
-                    else:
-                        break
-                n += 1
-
-    return not_beacons, sensors_on_target, beacons_on_target
-
 def find_beacon():
     with open(ARGS.input, "r", encoding="utf8")as ifp:
         data = ifp.read().rstrip()
@@ -94,16 +53,18 @@ def find_beacon():
         ))
 
     max_coordinate = 4000000
-
     search_spots = set()
     num_beacon_sensors = len(beacons)
     beacon_found = False
+
     for i in range(num_beacon_sensors):
         logging.info(f"checking perimeter {i+1}/{num_beacon_sensors}")
         logging.debug(f"generating perimeter for b{beacons[i]} s{sensors[i]}")
+        # Generate outside search perimeter
         perimeter = sensor_beacon_perimeter(sensors[i], beacons[i], max_coordinate)
         logging.debug(f"search {len(perimeter)} positions")
         for search in perimeter:
+            ## search perimiter position if not already
             if search not in search_spots:
                 search_spots.add(search)
                 # check if inside beacon range
