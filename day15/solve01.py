@@ -60,7 +60,7 @@ def find_not_beacon():
     print(f"Row {target_row} there are {len(not_beacons)} position(s) where beacon cannot be")
 
 if __name__ == "__main__":
-    _parser = argparse.ArgumentParser(description="Day 14 Puzzle 2")
+    _parser = argparse.ArgumentParser(description="Day 15 Puzzle 2")
     _parser.add_argument("-i", "--input", help="Puzzle input")
     _parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     _parser.add_argument("-vv", "--very-verbose", help="futher increase output verbosity", action="store_true")
